@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1039278519261",
+    "project_id": "coba4-a9c92",
+    "storage_bucket": "coba4-a9c92.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1039278519261:android:c87c921c8147b51f387c34",
+        "android_client_info": {
+          "package_name": "com.example.coba4"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcfRCBY_y6n6jbSWKE4o8TlHje_xP9ryw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
