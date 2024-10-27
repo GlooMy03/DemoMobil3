@@ -1,9 +1,10 @@
+import 'package:coba4/app/modules/home/views/home_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../login/views/loginview.dart';
-import '../../home/views/home_view.dart'; // Import HomeView
+import '../../landing_page/views/landing_page.dart'; // Import HomeView
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;

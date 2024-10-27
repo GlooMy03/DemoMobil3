@@ -1,23 +1,26 @@
 import 'package:get/get.dart';
+import '../models/game_model.dart';
+import '../services/game_service.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  final GameService _gameService = GameService();
 
-  final count = 0.obs;
+  // Daftar game sebagai observable
+  var games = <GameModel>[].obs;
+  var selectedCategory = 'Top Seller'.obs;
+
   @override
   void onInit() {
     super.onInit();
+    loadGames();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void loadGames() async {
+    // Memanggil fetchGames dan mengupdate observable games
+    games.value = await _gameService.fetchGames();
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  void selectCategory(String category) {
+    selectedCategory.value = category;
   }
-
-  void increment() => count.value++;
 }

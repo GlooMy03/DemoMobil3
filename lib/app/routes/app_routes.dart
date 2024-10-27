@@ -7,6 +7,7 @@ abstract class Routes {
   static const SIGNIN = _Paths.SIGNIN;
   static const LOGIN = _Paths.LOGIN;
   static const GAMEDETAILSCREEN = _Paths.GAMEDETAILSCREEN;
+  static const LANDING = _Paths.LANDING;
 }
 
 abstract class _Paths {
@@ -15,4 +16,6 @@ abstract class _Paths {
   static const SIGNIN = '/signin';
   static const LOGIN = '/login';
   static const GAMEDETAILSCREEN = '/GameDetailScreen';
+  static const LANDING = '/lending';
 }
+

@@ -1,56 +1,123 @@
-import 'package:coba4/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-// Import the AppRoutes to access SIGN_IN constant
+import '../controllers/home_controller.dart';
 
 class HomeView extends StatelessWidget {
+  final HomeController controller = Get.put(HomeController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Stack(
-        alignment: Alignment.center,
-        children: [
-          // Background Image
-          Positioned.fill(
-            child: Image.asset(
-              'assets/images/backgroundlandingpage.png', // Tambahkan path gambar di sini
-              fit: BoxFit.cover,
-            ),
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Text(
+          'GAMENET',
+          style: TextStyle(color: Colors.teal),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search, color: Colors.white),
+            onPressed: () {
+              // Implement search functionality
+            },
           ),
-          // "GAMENET" Text
-          Positioned(
-            top: 300,
-            child: Text(
-              'GAMENET',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Colors.cyanAccent,
+        ],
+      ),
+      body: Column(
+        children: [
+          _buildCategoryButtons(),
+          SizedBox(height: 20),
+          // Main image button at the top center
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                // Implement the action for main image button tap
+              },
+              child: SizedBox(
+                width: 200, // Adjust width as needed
+                height: 250, // Adjust height as needed
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    'assets/images/eldenring.jpeg', // Replace with your image path
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
           ),
-          // Additional Layer (e.g., Player and Ball)
-          // Positioned(
-          //   bottom: 100,
-          //   child: Opacity(
-          //     opacity: 0.8,
-          //     child: Image.asset(
-          //       'assets/images/backgroundlandingpage.png', // Tambahkan path gambar di sini
-          //       width: 300,
-          //     ),
-          //   ),
-          // ),
-          // Tombol Navigasi dengan Get.toNamed
-          Positioned(
-            bottom: 50,
-            child: ElevatedButton(
-              onPressed: () {
-                Get.toNamed(Routes.SIGNIN); // Arahkan ke SIGN_IN route
-              },
-              child: Text('Next Page'),
+          SizedBox(height: 20),
+          Expanded(child: _buildGameList()),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCategoryButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _categoryButton('Top Seller'),
+        SizedBox(width: 10),
+        _categoryButton('New Release'),
+        SizedBox(width: 10),
+        _categoryButton('Special Offer'),
+      ],
+    );
+  }
+
+  Widget _categoryButton(String title) {
+    return Obx(() => ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: controller.selectedCategory.value == title
+                ? Colors.teal
+                : Colors.grey[800],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
             ),
+          ),
+          onPressed: () => controller.selectCategory(title),
+          child: Text(
+            title.toUpperCase(),
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
+  }
+
+  Widget _buildGameList() {
+    return Obx(() => GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 20,
+            crossAxisSpacing: 20,
+            childAspectRatio: 1.0,
+          ),
+          itemCount: controller.games.length,
+          itemBuilder: (context, index) {
+            var game = controller.games[index];
+            return _buildGameCard(game.title, game.image);
+          },
+        ));
+  }
+
+  Widget _buildGameCard(String title, String imagePath) {
+    return GestureDetector(
+      onTap: () {
+        // Implement action when game card is tapped
+      },
+      child: Column(
+        children: [
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.asset(imagePath, fit: BoxFit.cover),
+            ),
+          ),
+          SizedBox(height: 5),
+          Text(
+            title,
+            style: TextStyle(color: Colors.white),
           ),
         ],
       ),
