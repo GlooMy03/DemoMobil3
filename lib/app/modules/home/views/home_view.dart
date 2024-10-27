@@ -51,6 +51,7 @@ class HomeView extends StatelessWidget {
           Expanded(child: _buildGameList()),
         ],
       ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
@@ -118,6 +119,44 @@ class HomeView extends StatelessWidget {
           Text(
             title,
             style: TextStyle(color: Colors.white),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomNavigationBar() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.grey[850],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IconButton(
+            icon: Icon(Icons.home, color: Colors.white),
+            onPressed: () {
+              // Home button action
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.favorite_border, color: Colors.white),
+            onPressed: () {
+              // Wishlist button action
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.shopping_cart_outlined, color: Colors.white),
+            onPressed: () {
+              // Shopping button action
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.person, color: Colors.white),
+            onPressed: () {
+              // Notification button action
+            },
           ),
         ],
       ),

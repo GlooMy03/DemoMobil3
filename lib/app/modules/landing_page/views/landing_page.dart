@@ -47,7 +47,7 @@ class LandingPage extends StatelessWidget {
             bottom: 50,
             child: ElevatedButton(
               onPressed: () {
-                Get.toNamed(Routes.SIGNIN); // Arahkan ke SIGN_IN route
+                Get.toNamed(Routes.LOGIN); // Arahkan ke SIGN_IN route
               },
               child: Text('Next Page'),
             ),

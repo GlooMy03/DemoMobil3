@@ -115,6 +115,28 @@ class _LoginPageState extends State<LoginPage> {
                   );
                 }),
                 SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    // Navigate to signup page
+                    // Replace the below with your signup page route
+                    Get.toNamed('/signin');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.lightBlueAccent,
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 80),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    'SIGN UP',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -142,6 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
+                SizedBox(height: 16), // Add spacing before the signup button
               ],
             ),
           ),
