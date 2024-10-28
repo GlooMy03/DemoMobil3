@@ -1,5 +1,7 @@
 import 'package:coba4/app/modules/home/views/home_view.dart';
 import 'package:coba4/app/modules/login/views/loginview.dart';
+import 'package:coba4/app/modules/profil_edit/bindings/profile_binding.dart';
+import 'package:coba4/app/modules/profil_edit/views/profile_view.dart';
 import 'package:coba4/app/modules/signin/views/signinview.dart';
 import 'package:get/get.dart';
 
@@ -30,6 +32,11 @@ class AppPages {
       name: _Paths.LANDING,
       page: () => LandingPage(),
       binding: LandingBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROFILE,
+      page: () => ProfilePage(),
+      binding: ProfileBinding(),
     ),
   ];
 }
