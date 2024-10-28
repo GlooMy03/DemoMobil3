@@ -32,6 +32,7 @@ class HomeView extends StatelessWidget {
           Center(
             child: GestureDetector(
               onTap: () {
+                Get.toNamed("/desk");
                 // Implement the action for main image button tap
               },
               child: SizedBox(

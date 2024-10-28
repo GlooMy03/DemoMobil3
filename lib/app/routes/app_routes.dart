@@ -8,6 +8,12 @@ abstract class Routes {
   static const LOGIN = _Paths.LOGIN;
   static const GAMEDETAILSCREEN = _Paths.GAMEDETAILSCREEN;
   static const LANDING = _Paths.LANDING;
+
+
+  //Tambahan Getconnect
+  static const GETCONNECT = _Paths.GETCONNECT;
+  static const ARTICLE_DETAILS = _Paths.ARTICLE_DETAILS;
+  static const ARTICLE_DETAILS_WEBVIEW = _Paths.ARTICLE_DETAILS_WEBVIEW;
 }
 
 abstract class _Paths {
@@ -17,5 +23,13 @@ abstract class _Paths {
   static const LOGIN = '/login';
   static const GAMEDETAILSCREEN = '/GameDetailScreen';
   static const LANDING = '/lending';
+
+  //Tambahan Getconnect
+  static const GETCONNECT = '/get_connect_view';
+  static const ARTICLE_DETAILS = '/article_details';
+  static const ARTICLE_DETAILS_WEBVIEW = '/article_details_webview';
 }
 
+class AppRoutes {
+  static const DESK = '/desk';
+}
