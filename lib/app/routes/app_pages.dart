@@ -6,6 +6,8 @@ import 'package:coba4/app/modules/Game_Detail/modules/get_connect/views/get_conn
 import 'package:coba4/app/modules/Game_Detail/modules/home/views/desk_view.dart';
 import 'package:coba4/app/modules/home/views/home_view.dart';
 import 'package:coba4/app/modules/login/views/loginview.dart';
+import 'package:coba4/app/modules/profil_edit/bindings/profile_binding.dart';
+import 'package:coba4/app/modules/profil_edit/views/profile_view.dart';
 import 'package:coba4/app/modules/signin/views/signinview.dart';
 import 'package:get/get.dart';
 

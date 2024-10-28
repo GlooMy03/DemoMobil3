@@ -1,3 +1,4 @@
+import 'package:coba4/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
@@ -156,7 +157,7 @@ class HomeView extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.person, color: Colors.white),
             onPressed: () {
-              // Notification button action
+              Get.toNamed(Routes.PROFILE); // Arahkan ke SIGN_IN route
             },
           ),
         ],
