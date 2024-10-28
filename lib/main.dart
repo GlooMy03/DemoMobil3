@@ -19,7 +19,7 @@ void main() async {
   FirebaseMessagingHandler firebaseMessagingHandler = FirebaseMessagingHandler();
   await firebaseMessagingHandler.initPushNotification();
 
-
+  
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,

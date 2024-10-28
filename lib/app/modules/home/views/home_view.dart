@@ -20,6 +20,7 @@ class HomeView extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.search, color: Colors.white),
             onPressed: () {
+              Get.toNamed('/search');
               // Implement search functionality
             },
           ),
@@ -157,7 +158,7 @@ class HomeView extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.person, color: Colors.white),
             onPressed: () {
-              Get.toNamed(Routes.PROFILE); // Arahkan ke SIGN_IN route
+              Get.toNamed("/profile"); // Arahkan ke SIGN_IN route
             },
           ),
         ],

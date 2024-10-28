@@ -32,4 +32,8 @@ abstract class _Paths {
 
 class AppRoutes {
   static const DESK = '/desk';
+  static const DESKLIST = '/desklist';
+  static const PROFILE = '/profile';
+  static const SEARCH = '/search';
+  static const CREATETASKSCREEN = '/createtaskscreen';
 }
