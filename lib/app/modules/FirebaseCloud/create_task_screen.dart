@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:coba4/app/modules/FirebaseCloud/app_color.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class CreateTaskScreen extends StatefulWidget {
   final bool isEdit;
@@ -31,6 +32,8 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   bool isLoading = false;
   File? selectedMediaFile;
   String? mediaUrl;
+
+   final AudioPlayer _audioPlayer = AudioPlayer(); // Pemutar audio
 
   @override
   void initState() {
@@ -235,7 +238,10 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        onPressed: _handleSubmit,
+        onPressed: () async {
+          await _handleSubmit();
+          await _playNotificationSound(); // Memainkan suara setelah submit
+        },
       ),
     );
   }
@@ -339,5 +345,13 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
         duration: Duration(seconds: 3),
       ),
     );
+  }
+  Future<void> _playNotificationSound() async {
+    try {
+      const audioUrl = 'https://orangefreesounds.com/wp-content/uploads/2022/11/Ting-sound.mp3'; // Ganti dengan URL audio Anda
+      await _audioPlayer.play(UrlSource(audioUrl));
+    } catch (e) {
+      _showSnackBarMessage('Failed to play sound: $e');
+    }
   }
 }
