@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coba4/app/modules/AudioPlayer/controller/notifikasi_controller.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:coba4/app/modules/FirebaseCloud/app_color.dart';
@@ -33,7 +35,11 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   File? selectedMediaFile;
   String? mediaUrl;
 
-   final AudioPlayer _audioPlayer = AudioPlayer(); // Pemutar audio
+  String? selectedAudio; // Variabel untuk menyimpan suara yang dipilih
+
+  // final NotificationController notificationController =
+  //     Get.put(NotificationController());
+  // Pemutar audio
 
   @override
   void initState() {
@@ -189,6 +195,12 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                 icon: Icon(Icons.photo_library, color: appColor.colorTertiary),
                 onPressed: () async => _pickMediaFromGallery(),
               ),
+              IconButton(
+                icon: Icon(Icons.audio_file, color: appColor.colorTertiary),
+                onPressed: () async {
+                  await _showAudioSelectionDialog();
+                },
+              ),
             ],
           ),
         ],
@@ -240,7 +252,13 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
         ),
         onPressed: () async {
           await _handleSubmit();
-          await _playNotificationSound(); // Memainkan suara setelah submit
+          if (selectedAudio != null) {
+            await _playNotificationSound(
+                selectedAudio!); // Mainkan suara terpilih
+          } else {
+            _showSnackBarMessage(
+                'Silakan pilih suara notifikasi terlebih dahulu!');
+          }
         },
       ),
     );
@@ -346,12 +364,63 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       ),
     );
   }
-  Future<void> _playNotificationSound() async {
+
+  Future<void> _showAudioSelectionDialog() async {
+    final List<String> audioOptions = [
+      'Ting-sound.mp3',
+      'notif2.mp3',
+      'notif3.mp3',
+    ]; // Daftar file suara
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Pilih Suara Notifikasi'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: audioOptions.map((audio) {
+              return RadioListTile<String>(
+                title:
+                    Text(audio.replaceAll('.mp3', '')), // Tampilkan nama suara
+                value: audio,
+                groupValue: selectedAudio,
+                onChanged: (value) {
+                  setState(() {
+                    selectedAudio = value; // Simpan suara yang dipilih
+                  });
+                  Navigator.of(context).pop(); // Tutup dialog setelah memilih
+                },
+              );
+            }).toList(),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _playNotificationSound(String audioName) async {
+    final audioPlayer = AudioPlayer();
+    final audioPath = 'audio/$audioName'; // Path file lokal
+
     try {
-      const audioUrl = 'https://orangefreesounds.com/wp-content/uploads/2022/11/Ting-sound.mp3'; // Ganti dengan URL audio Anda
-      await _audioPlayer.play(UrlSource(audioUrl));
+      await audioPlayer.play(AssetSource(audioPath));
     } catch (e) {
       _showSnackBarMessage('Failed to play sound: $e');
     }
   }
+
+// Contoh penggunaan:
+  void playTingSound() {
+    _playNotificationSound('Ting-sound.mp3'); // Memutar Ting-sound.mp3
+  }
+
+  void playAlertSound() {
+    _playNotificationSound(
+        'Immersive-ocean-soundscapes.mp3'); // Memutar Alert-sound.mp3
+  }
+
+// void playErrorSound() {
+//   _playNotificationSound('Error-sound.mp3'); // Memutar Error-sound.mp3
+// }
 }
