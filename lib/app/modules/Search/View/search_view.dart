@@ -1,4 +1,3 @@
-
 import 'package:coba4/app/modules/Search/Controllers/game_search_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,23 +18,43 @@ class SearchView extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Search Bar
+          // Search Bar with Mic
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                hintText: 'Search game...',
-                hintStyle: TextStyle(color: Colors.white54),
-                filled: true,
-                fillColor: Colors.grey[800],
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
+            child: Stack(
+              alignment: Alignment.centerRight,
+              children: [
+                TextField(
+                  controller: controller.searchTextController,
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: 'Search game...',
+                    hintStyle: TextStyle(color: Colors.white54),
+                    filled: true,
+                    fillColor: Colors.grey[800],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  onChanged: (value) => controller.searchGame(value),
                 ),
-                prefixIcon: Icon(Icons.search, color: Colors.white),
-              ),
-              onChanged: (value) => controller.searchGame(value),
+                Obx(
+                  () => IconButton(
+                    icon: Icon(
+                      controller.isListening.value ? Icons.mic : Icons.mic_none,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      if (controller.isListening.value) {
+                        controller.stopListening();
+                      } else {
+                        controller.startListening();
+                      }
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
           Container(
