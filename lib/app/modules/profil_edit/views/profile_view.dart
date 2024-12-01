@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../controllers/profile_controller.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ProfilePage extends GetView<ProfileController> {
   const ProfilePage({Key? key}) : super(key: key);
@@ -36,6 +37,7 @@ class ProfilePage extends GetView<ProfileController> {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
+                // Foto Profil
                 Stack(
                   children: [
                     Obx(() {
@@ -94,14 +96,67 @@ class ProfilePage extends GetView<ProfileController> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
+
+                const SizedBox(height: 28),
+
+// Location Information
+                Obx(() {
+                  final latitude = controller.latitude.value;
+                  final longitude = controller.longitude.value;
+                  final location = controller.locationName.value;
+
+                  return Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[900],
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Location Details',
+                          style: TextStyle(
+                            color: const Color.fromARGB(255, 7, 183, 142),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        _buildLocationInfo('Latitude', latitude.toString()),
+                        _buildLocationInfo('Longitude', longitude.toString()),
+                        _buildLocationInfo('Location', location),
+                      ],
+                    ),
+                  );
+                }),
+
+                const SizedBox(height: 13),
+                Obx(() => controller.latitude.value != 0.0 &&
+                        controller.longitude.value != 0.0
+                    ? GestureDetector(
+                        onTap: controller.openGoogleMaps,
+                        child: Text(
+                          'Lihat Lokasi di Google Maps',
+                          style: TextStyle(color: Colors.blue, fontSize: 16),
+                        ),
+                      )
+                    : const SizedBox.shrink()),
+                const SizedBox(height: 15),
+                // Tombol untuk Memperbarui Lokasi
+                IconButton(
+                  icon: const Icon(Icons.refresh, color: Colors.white),
+                  onPressed: controller.getCurrentLocation,
+                ),
+
+                // Text Fields
                 _buildTextField(
                   label: 'Name',
                   controller: controller.nameController,
                 ),
                 const SizedBox(height: 16),
                 _buildTextField(
-                  label: 'Nomor Hp',
+                  label: 'Phone Number',
                   controller: controller.phoneController,
                 ),
                 const SizedBox(height: 16),
@@ -112,15 +167,16 @@ class ProfilePage extends GetView<ProfileController> {
               ],
             ),
           ),
-          // Loading overlay
+
+          // Loading Overlay
           Obx(
             () => controller.isLoading.value
                 ? Container(
                     color: Colors.black54,
-                    child: const Center(
+                    child: Center(
                       child: CircularProgressIndicator(
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(Color(0xFF64FFDA)),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            const Color(0xFF64FFDA)),
                       ),
                     ),
                   )
@@ -131,6 +187,7 @@ class ProfilePage extends GetView<ProfileController> {
     );
   }
 
+  // Fungsi untuk membangun TextField dengan label dan controller
   Widget _buildTextField({
     required String label,
     required TextEditingController controller,
@@ -163,4 +220,33 @@ class ProfilePage extends GetView<ProfileController> {
       ],
     );
   }
+}
+
+// Helper method for location info
+Widget _buildLocationInfo(String label, String value) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 4.0),
+    child: Row(
+      children: [
+        Text(
+          '$label: ',
+          style: TextStyle(
+            color: Colors.white70,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    ),
+  );
 }

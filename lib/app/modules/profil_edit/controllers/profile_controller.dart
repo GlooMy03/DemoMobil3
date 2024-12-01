@@ -1,10 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
+
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -16,6 +23,11 @@ class ProfileController extends GetxController {
   var name = ''.obs;
   var phone = ''.obs;
   var email = ''.obs;
+  var latitude = 0.0.obs;
+  var longitude = 0.0.obs;
+  var locationName = ''.obs;
+
+  var mapController = Completer<GoogleMapController>();
 
   late TextEditingController nameController;
   late TextEditingController phoneController;
@@ -28,6 +40,7 @@ class ProfileController extends GetxController {
     phoneController = TextEditingController();
     emailController = TextEditingController();
     loadProfile();
+    getCurrentLocation();
   }
 
   @override
@@ -36,6 +49,96 @@ class ProfileController extends GetxController {
     phoneController.dispose();
     emailController.dispose();
     super.onClose();
+  }
+
+// Fungsi untuk mendapatkan lokasi
+  Future<void> getCurrentLocation() async {
+    try {
+      bool serviceEnabled;
+      LocationPermission permission;
+
+      // Periksa apakah layanan lokasi aktif
+      serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        Get.snackbar("Error", "Layanan lokasi tidak aktif.");
+        return;
+      }
+
+      // Periksa izin lokasi
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          Get.snackbar("Error", "Izin lokasi ditolak.");
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        Get.snackbar("Error", "Izin lokasi ditolak permanen.");
+        return;
+      }
+
+      // Ambil lokasi perangkat
+      final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      latitude.value = position.latitude;
+      longitude.value = position.longitude;
+
+      // Setelah mendapatkan koordinat, ambil nama lokasi
+      await getLocationName();
+    } catch (e) {
+      Get.snackbar("Error", "Gagal mendapatkan lokasi: $e");
+    }
+  }
+
+  // Fungsi untuk mendapatkan nama lokasi berdasarkan koordinat
+  Future<void> getLocationName() async {
+    try {
+      // Mengonversi latitude dan longitude menjadi nama lokasi
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        latitude.value,
+        longitude.value,
+      );
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks[0];
+        locationName.value =
+            '${place.locality}, ${place.administrativeArea}, ${place.country}';
+      } else {
+        locationName.value = 'Lokasi tidak ditemukan';
+      }
+    } catch (e) {
+      locationName.value = 'Error mendapatkan lokasi: $e';
+    }
+  }
+
+  // Fungsi untuk membuka Google Maps
+  Future<void> openGoogleMaps() async {
+    final googleMapsUrl =
+        'https://www.google.com/maps?q=${latitude.value},${longitude.value}';
+    if (await canLaunch(googleMapsUrl)) {
+      await launch(googleMapsUrl);
+    } else {
+      Get.snackbar("Error", "Tidak dapat membuka Google Maps.");
+    }
+  }
+
+  Future<void> updateLocationInFirebase() async {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        await _firestore.collection('users').doc(user.uid).update({
+          'latitude': latitude.value,
+          'longitude': longitude.value,
+          'lastUpdated': FieldValue.serverTimestamp(),
+        });
+        print('Location updated in Firebase');
+      }
+    } catch (e) {
+      print('Error updating location in Firebase: $e');
+      Get.snackbar('Error', 'Failed to update location: $e');
+    }
   }
 
   Future<void> loadProfile() async {
