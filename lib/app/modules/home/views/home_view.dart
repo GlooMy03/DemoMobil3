@@ -12,9 +12,15 @@ class HomeView extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text(
-          'GAMENET',
-          style: TextStyle(color: Colors.teal),
+        title: GestureDetector(
+          onTap: () {
+            // Arahkan ke halaman lain ketika teks GAMENET ditekan
+            Get.toNamed('/about'); // Ganti '/home' dengan route yang sesuai
+          },
+          child: Text(
+            'GAMENET',
+            style: TextStyle(color: Colors.teal),
+          ),
         ),
         actions: [
           IconButton(

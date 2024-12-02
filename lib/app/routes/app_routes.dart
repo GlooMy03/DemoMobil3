@@ -8,7 +8,7 @@ abstract class Routes {
   static const LOGIN = _Paths.LOGIN;
   static const GAMEDETAILSCREEN = _Paths.GAMEDETAILSCREEN;
   static const LANDING = _Paths.LANDING;
-
+  static const ABOUT = _Paths.ABOUT;
 
   //Tambahan Getconnect
   static const GETCONNECT = _Paths.GETCONNECT;
@@ -23,6 +23,7 @@ abstract class _Paths {
   static const LOGIN = '/login';
   static const GAMEDETAILSCREEN = '/GameDetailScreen';
   static const LANDING = '/lending';
+  static const ABOUT = '/about';
 
   //Tambahan Getconnect
   static const GETCONNECT = '/get_connect_view';
@@ -36,4 +37,5 @@ class AppRoutes {
   static const PROFILE = '/profile';
   static const SEARCH = '/search';
   static const CREATETASKSCREEN = '/createtaskscreen';
+  static const ABOUT = '/about';
 }

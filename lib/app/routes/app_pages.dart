@@ -8,6 +8,8 @@ import 'package:coba4/app/modules/Game_Detail/modules/get_connect/views/get_conn
 import 'package:coba4/app/modules/Game_Detail/modules/home/views/desk_view.dart';
 import 'package:coba4/app/modules/Search/View/Search_view.dart';
 import 'package:coba4/app/modules/Search/bindings/search_binding.dart';
+import 'package:coba4/app/modules/about/bindings/about_binding.dart';
+import 'package:coba4/app/modules/about/views/about_page.dart';
 import 'package:coba4/app/modules/home/views/home_view.dart';
 import 'package:coba4/app/modules/login/views/loginview.dart';
 import 'package:coba4/app/modules/profil_edit/bindings/profile_binding.dart';
@@ -44,7 +46,6 @@ class AppPages {
       binding: LandingBinding(),
     ),
 
-    
     GetPage(
       name: '/profile',
       page: () => ProfilePage(),
@@ -57,8 +58,14 @@ class AppPages {
       binding: SearchBinding(), // tambahkan binding di sini
     ),
 
+    GetPage(
+      name: '/about',
+      page: () => AboutView(),
+      binding: AboutBinding(), // tambahkan binding di sini
+    ),
+
     //tambahan Getconnect
-        GetPage(
+    GetPage(
         name: _Paths.GETCONNECT,
         page: () => const GetConnectView(),
         binding: GetConnectBinding()),
@@ -73,19 +80,15 @@ class AppPages {
 
     GetPage(name: AppRoutes.DESK, page: () => DeskView()),
     GetPage(name: AppRoutes.DESKLIST, page: () => DeskListView()),
-    
+
     GetPage(
-  name: AppRoutes.CREATETASKSCREEN,
-  page: () => CreateTaskScreen(
-    isEdit: Get.arguments?['isEdit'] ?? false,
-    documentId: Get.arguments?['documentId'] ?? '',
-    name: Get.arguments?['name'] ?? '',
-    description: Get.arguments?['description'] ?? '',
-  ),
-),
-
-    
-
+      name: AppRoutes.CREATETASKSCREEN,
+      page: () => CreateTaskScreen(
+        isEdit: Get.arguments?['isEdit'] ?? false,
+        documentId: Get.arguments?['documentId'] ?? '',
+        name: Get.arguments?['name'] ?? '',
+        description: Get.arguments?['description'] ?? '',
+      ),
+    ),
   ];
 }
-
