@@ -10,15 +10,18 @@ import 'package:coba4/app/modules/Search/View/Search_view.dart';
 import 'package:coba4/app/modules/Search/bindings/search_binding.dart';
 import 'package:coba4/app/modules/about/bindings/about_binding.dart';
 import 'package:coba4/app/modules/about/views/about_page.dart';
+import 'package:coba4/app/modules/connection/bindings/connection_binding.dart';
+import 'package:coba4/app/modules/connection/views/no_connection_view.dart';
 import 'package:coba4/app/modules/home/views/home_view.dart';
 import 'package:coba4/app/modules/login/views/loginview.dart';
 import 'package:coba4/app/modules/profil_edit/bindings/profile_binding.dart';
 import 'package:coba4/app/modules/profil_edit/views/profile_view.dart';
 import 'package:coba4/app/modules/signin/views/signinview.dart';
-import 'package:get/get.dart';
+import 'package:coba4/app/modules/landing_page/bindings/landing_binding.dart';
+import 'package:coba4/app/modules/landing_page/views/landing_page.dart';
 
-import '../modules/landing_page/bindings/landing_binding.dart';
-import '../modules/landing_page/views/landing_page.dart';
+
+import 'package:get/get.dart';
 
 part 'app_routes.dart';
 
@@ -45,26 +48,28 @@ class AppPages {
       page: () => LandingPage(),
       binding: LandingBinding(),
     ),
-
     GetPage(
       name: '/profile',
       page: () => ProfilePage(),
-      binding: ProfileBinding(), // tambahkan binding di sini
+      binding: ProfileBinding(),
     ),
-
     GetPage(
       name: '/search',
       page: () => SearchView(),
-      binding: SearchBinding(), // tambahkan binding di sini
+      binding: SearchBinding(),
     ),
-
     GetPage(
       name: '/about',
       page: () => AboutView(),
-      binding: AboutBinding(), // tambahkan binding di sini
+      binding: AboutBinding(),
     ),
-
-    //tambahan Getconnect
+    // Halaman untuk pengecekan koneksi
+    GetPage(
+      name: '/NoConnectionView',
+      page: () => NoConnectionView(),
+      binding: ConnectionBinding(),  
+    ),
+    // Tambahan GetConnect
     GetPage(
         name: _Paths.GETCONNECT,
         page: () => const GetConnectView(),

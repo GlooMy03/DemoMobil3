@@ -14,6 +14,9 @@ abstract class Routes {
   static const GETCONNECT = _Paths.GETCONNECT;
   static const ARTICLE_DETAILS = _Paths.ARTICLE_DETAILS;
   static const ARTICLE_DETAILS_WEBVIEW = _Paths.ARTICLE_DETAILS_WEBVIEW;
+
+  // Rute untuk halaman NoConnection
+  static const NO_CONNECTION = _Paths.NO_CONNECTION;  // Tambahkan rute baru ini
 }
 
 abstract class _Paths {
@@ -29,6 +32,9 @@ abstract class _Paths {
   static const GETCONNECT = '/get_connect_view';
   static const ARTICLE_DETAILS = '/article_details';
   static const ARTICLE_DETAILS_WEBVIEW = '/article_details_webview';
+
+  // Path untuk NoConnectionView
+  static const NO_CONNECTION = '/no_connection';  // Tambahkan path baru ini
 }
 
 class AppRoutes {

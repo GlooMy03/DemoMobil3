@@ -83,5 +83,4 @@ class DefaultFirebaseOptions {
     authDomain: 'coba4-a9c92.firebaseapp.com',
     storageBucket: 'coba4-a9c92.appspot.com',
   );
-
 }

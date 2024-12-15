@@ -32,10 +32,10 @@ class AboutView extends GetView<AboutController> {
               ),
               child: Column(
                 children: [
-                  const Icon(
-                    Icons.business_rounded,
-                    size: 60,
-                    color: Colors.white,
+                  Image.asset(
+                    'assets/images/eldenring.jpeg',
+                    width: 60, // Atur lebar
+                    height: 60, // Atur tinggi
                   ),
                   const SizedBox(height: 8),
                   const Text(

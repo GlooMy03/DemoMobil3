@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:connectivity_plus/connectivity_plus.dart'; // Tambahkan connectivity_plus
 import '../../signin/controllers/signincontroller.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -11,12 +12,24 @@ class _RegisterPageState extends State<RegisterPage> {
   final AuthController _authController = Get.put(AuthController());
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final Connectivity _connectivity = Connectivity(); // Instance untuk memeriksa koneksi
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  // Fungsi untuk memeriksa koneksi internet
+  Future<bool> _checkConnection() async {
+    final connectivityResult = await _connectivity.checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      // Arahkan ke halaman NoConnection jika tidak ada koneksi
+      Get.toNamed('/NoConnectionView');
+      return false;
+    }
+    return true;
   }
 
   @override
@@ -26,7 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/images/backgroundlandingpage.png', // Change to the correct path for your background image
+            'assets/images/backgroundlandingpage.png', // Ganti dengan path background yang benar
             fit: BoxFit.cover,
           ),
           Padding(
@@ -89,11 +102,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   return ElevatedButton(
                     onPressed: _authController.isLoading.value
                         ? null
-                        : () {
-                            _authController.registerUser(
-                              _emailController.text,
-                              _passwordController.text,
-                            );
+                        : () async {
+                            // Periksa koneksi internet sebelum registrasi
+                            if (await _checkConnection()) {
+                              _authController.registerUser(
+                                _emailController.text,
+                                _passwordController.text,
+                              );
+                            }
                           },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,

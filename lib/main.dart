@@ -1,4 +1,5 @@
 import 'package:coba4/app/modules/Game_Detail/Messaging/notification_handler.dart';
+import 'package:coba4/dependency_injection.dart';
 import 'package:coba4/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -16,10 +17,10 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
   // Inisialisasi push notification handler
-  FirebaseMessagingHandler firebaseMessagingHandler = FirebaseMessagingHandler();
+  FirebaseMessagingHandler firebaseMessagingHandler =
+      FirebaseMessagingHandler();
   await firebaseMessagingHandler.initPushNotification();
 
-  
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
@@ -28,4 +29,5 @@ void main() async {
       getPages: AppPages.routes,
     ),
   );
+  DependencyInjection.init();
 }
