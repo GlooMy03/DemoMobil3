@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coba4/app/modules/AudioPlayer/controller/notifikasi_controller.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:coba4/app/modules/FirebaseCloud/app_color.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:get_storage/get_storage.dart';
 
 class CreateTaskScreen extends StatefulWidget {
   final bool isEdit;
@@ -34,7 +36,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   bool isLoading = false;
   File? selectedMediaFile;
   String? mediaUrl;
-
+  final GetStorage _storage = GetStorage(); // Penyimpanan lokal
   String? selectedAudio; // Variabel untuk menyimpan suara yang dipilih
 
   // final NotificationController notificationController =
@@ -47,6 +49,38 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     if (widget.isEdit) {
       controllerName.text = widget.name;
       controllerDescription.text = widget.description;
+    }
+    _uploadLocalDataIfNeeded();
+  }
+
+  // Cek Koneksi Internet
+  Future<bool> _checkInternetConnection() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    return connectivityResult != ConnectivityResult.none;
+  }
+
+  // Simpan Data Secara Lokal jika Tidak Ada Koneksi
+  Future<void> _saveDataLocally(String name, String description) async {
+    Map<String, dynamic> data = {
+      'name': name,
+      'description': description,
+      'mediaUrl': mediaUrl ?? '',
+      'selectedAudio': selectedAudio ?? '',
+    };
+    await _storage.write('task_data', data);
+    _showSnackBarMessage('Data disimpan secara lokal');
+  }
+
+  // Upload Data Lokal Saat Koneksi Tersedia
+  Future<void> _uploadLocalDataIfNeeded() async {
+    bool isConnected = await _checkInternetConnection();
+    if (isConnected) {
+      var localData = _storage.read('task_data');
+      if (localData != null) {
+        await _handleSubmit(); // Upload data lokal
+        await _storage
+            .remove('task_data'); // Hapus data lokal setelah berhasil diupload
+      }
     }
   }
 
@@ -327,33 +361,37 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       isLoading = true;
     });
 
-    try {
-      if (selectedMediaFile != null) {
-        await _uploadMedia();
-      }
+    bool isConnected = await _checkInternetConnection();
 
-      if (widget.isEdit) {
-        await firestore.collection('tasks').doc(widget.documentId).update({
-          'name': name,
-          'description': description,
-          if (mediaUrl != null) 'mediaUrl': mediaUrl,
-        });
-      } else {
-        await firestore.collection('tasks').add({
-          'name': name,
-          'description': description,
-          if (mediaUrl != null) 'mediaUrl': mediaUrl,
-        });
-      }
+    if (isConnected) {
+      try {
+        // Simpan ke Firestore
+        if (widget.isEdit) {
+          await firestore.collection('tasks').doc(widget.documentId).update({
+            'name': name,
+            'description': description,
+            if (mediaUrl != null) 'mediaUrl': mediaUrl,
+          });
+        } else {
+          await firestore.collection('tasks').add({
+            'name': name,
+            'description': description,
+            if (mediaUrl != null) 'mediaUrl': mediaUrl,
+          });
+        }
 
-      Navigator.pop(context);
-    } catch (e) {
-      _showSnackBarMessage('Error saving post: $e');
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
+        Navigator.pop(context);
+      } catch (e) {
+        _showSnackBarMessage('Error saving post: $e');
+      }
+    } else {
+      await _saveDataLocally(
+          name, description); // Simpan secara lokal jika tidak terkoneksi
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void _showSnackBarMessage(String message) {
