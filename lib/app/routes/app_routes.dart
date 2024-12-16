@@ -29,6 +29,12 @@ abstract class _Paths {
   static const GETCONNECT = '/get_connect_view';
   static const ARTICLE_DETAILS = '/article_details';
   static const ARTICLE_DETAILS_WEBVIEW = '/article_details_webview';
+
+
+
+
+  // Path untuk NoConnectionView
+  static const NO_CONNECTION = '/no_connection';  // Tambahkan path baru ini
 }
 
 class AppRoutes {
@@ -38,4 +44,12 @@ class AppRoutes {
   static const SEARCH = '/search';
   static const CREATETASKSCREEN = '/createtaskscreen';
   static const ABOUT = '/about';
+
+
+  static const ADMIN = '/admin';
+  static const GAMEDETAIL = '/game_detail';
+
+  
+
+  static const STORAGE = '/storage';
 }

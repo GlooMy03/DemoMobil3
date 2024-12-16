@@ -1,4 +1,3 @@
-import 'package:coba4/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
@@ -14,8 +13,7 @@ class HomeView extends StatelessWidget {
         backgroundColor: Colors.black,
         title: GestureDetector(
           onTap: () {
-            // Arahkan ke halaman lain ketika teks GAMENET ditekan
-            Get.toNamed('/about'); // Ganti '/home' dengan route yang sesuai
+            Get.toNamed('/about');
           },
           child: Text(
             'GAMENET',
@@ -27,7 +25,6 @@ class HomeView extends StatelessWidget {
             icon: Icon(Icons.search, color: Colors.white),
             onPressed: () {
               Get.toNamed('/search');
-              // Implement search functionality
             },
           ),
         ],
@@ -35,27 +32,6 @@ class HomeView extends StatelessWidget {
       body: Column(
         children: [
           _buildCategoryButtons(),
-          SizedBox(height: 20),
-          // Main image button at the top center
-          Center(
-            child: GestureDetector(
-              onTap: () {
-                Get.toNamed("/desk");
-                // Implement the action for main image button tap
-              },
-              child: SizedBox(
-                width: 200, // Adjust width as needed
-                height: 250, // Adjust height as needed
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    'assets/images/eldenring.jpeg', // Replace with your image path
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-          ),
           SizedBox(height: 20),
           Expanded(child: _buildGameList()),
         ],
@@ -96,43 +72,81 @@ class HomeView extends StatelessWidget {
   }
 
   Widget _buildGameList() {
-    return Obx(() => GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 20,
-            crossAxisSpacing: 20,
-            childAspectRatio: 1.0,
+    return Obx(() {
+      if (controller.games.isEmpty) {
+        return Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
           ),
-          itemCount: controller.games.length,
-          itemBuilder: (context, index) {
-            var game = controller.games[index];
-            return _buildGameCard(game.title, game.image);
-          },
-        ));
+        );
+      }
+      return GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 20,
+          crossAxisSpacing: 20,
+          childAspectRatio: 1.0,
+        ),
+        itemCount: controller.games.length,
+        itemBuilder: (context, index) {
+          var game = controller.games[index];
+          return _buildGameCard(game.title, game.image, game.description);
+        },
+      );
+    });
   }
 
-  Widget _buildGameCard(String title, String imagePath) {
-    return GestureDetector(
-      onTap: () {
-        // Implement action when game card is tapped
-      },
-      child: Column(
-        children: [
-          Expanded(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset(imagePath, fit: BoxFit.cover),
+  Widget _buildGameCard(String title, String imageUrl, String description) {
+  return GestureDetector(
+    onTap: () {
+      Get.toNamed('/game_detail', arguments: {
+        'title': title,
+        'image': imageUrl,
+        'description': description,  // Pastikan description dikirim
+      });
+    },
+    child: Column(
+      children: [
+        Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.network(
+              imageUrl,
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                        : null,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
+                  ),
+                );
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return Center(
+                  child: Icon(
+                    Icons.broken_image,
+                    color: Colors.grey,
+                  ),
+                );
+              },
             ),
           ),
-          SizedBox(height: 5),
-          Text(
-            title,
-            style: TextStyle(color: Colors.white),
-          ),
-        ],
-      ),
-    );
-  }
+        ),
+        SizedBox(height: 5),
+        Text(
+          title,
+          style: TextStyle(color: Colors.white),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    ),
+  );
+}
+
 
   Widget _buildBottomNavigationBar() {
     return Container(
@@ -145,26 +159,28 @@ class HomeView extends StatelessWidget {
         children: [
           IconButton(
             icon: Icon(Icons.home, color: Colors.white),
-            onPressed: () {
-              // Home button action
-            },
+            onPressed: () {},
           ),
           IconButton(
             icon: Icon(Icons.favorite_border, color: Colors.white),
-            onPressed: () {
-              // Wishlist button action
-            },
+            onPressed: () {},
           ),
           IconButton(
             icon: Icon(Icons.shopping_cart_outlined, color: Colors.white),
             onPressed: () {
-              // Shopping button action
+              Get.toNamed("/storage");
             },
           ),
           IconButton(
             icon: Icon(Icons.person, color: Colors.white),
             onPressed: () {
-              Get.toNamed("/profile"); // Arahkan ke SIGN_IN route
+              Get.toNamed("/profile");
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.admin_panel_settings, color: Colors.white),
+            onPressed: () {
+              Get.toNamed("/admin");
             },
           ),
         ],

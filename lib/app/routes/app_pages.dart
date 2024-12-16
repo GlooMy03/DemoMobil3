@@ -1,3 +1,7 @@
+import 'package:coba4/app/modules/Admin/binding/admin_binding.dart';
+import 'package:coba4/app/modules/Admin/view/admin_view.dart';
+import 'package:coba4/app/modules/Connection_wifi/binding/connection_binding.dart';
+import 'package:coba4/app/modules/Connection_wifi/view/connection_view.dart';
 import 'package:coba4/app/modules/FirebaseCloud/create_task_screen.dart';
 import 'package:coba4/app/modules/FirebaseCloud/desklist_view.dart';
 import 'package:coba4/app/modules/Game_Detail/modules/article_detail/bindings/article_detail_bindings.dart';
@@ -10,11 +14,14 @@ import 'package:coba4/app/modules/Search/View/Search_view.dart';
 import 'package:coba4/app/modules/Search/bindings/search_binding.dart';
 import 'package:coba4/app/modules/about/bindings/about_binding.dart';
 import 'package:coba4/app/modules/about/views/about_page.dart';
+import 'package:coba4/app/modules/detail_game/binding/game_detail.dart';
+import 'package:coba4/app/modules/detail_game/view/game_detail_view.dart';
 import 'package:coba4/app/modules/home/views/home_view.dart';
 import 'package:coba4/app/modules/login/views/loginview.dart';
 import 'package:coba4/app/modules/profil_edit/bindings/profile_binding.dart';
 import 'package:coba4/app/modules/profil_edit/views/profile_view.dart';
 import 'package:coba4/app/modules/signin/views/signinview.dart';
+import 'package:coba4/app/modules/storage/view/storage_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/landing_page/bindings/landing_binding.dart';
@@ -64,6 +71,24 @@ class AppPages {
       binding: AboutBinding(), // tambahkan binding di sini
     ),
 
+    GetPage(
+      name: '/admin',
+      page: () => AdminView(),
+      binding: AdminBinding(), // tambahkan binding di sini
+    ),
+
+    GetPage(
+      name: '/game_detail',
+      page: () => GameDetailView(),
+      binding: GameBinding(), // tambahkan binding di sini
+    ),
+
+    GetPage(
+      name: '/NoConnectionView',
+      page: () => NoConnectionView(),
+      binding: ConnectionBinding(),  
+    ),
+
     //tambahan Getconnect
     GetPage(
         name: _Paths.GETCONNECT,
@@ -90,5 +115,12 @@ class AppPages {
         description: Get.arguments?['description'] ?? '',
       ),
     ),
+
+    
+    
+    
+    
+    GetPage(name: AppRoutes.STORAGE, page: () => StorageViewer()),
+    // Tambahkan rute lainnya sesuai kebutuhan
   ];
 }

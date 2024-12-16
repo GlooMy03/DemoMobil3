@@ -1,16 +1,17 @@
 // lib/app/services/game_service.dart
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/game_model.dart';
 
 class GameService {
-  // Mengambil data statis dari game; nanti bisa diganti dengan panggilan API.
-  Future<List<GameModel>> fetchGames() async {
-    // Simulasi delay jaringan
-    await Future.delayed(Duration(seconds: 2));
-
-    return [
-      GameModel(title: 'Spider-Man 2', image: 'assets/images/spiderman.jpeg'),
-      GameModel(title: 'Ghost of Tsushima', image: 'assets/images/ghost.jpeg'),
-      // Tambahkan game lain di sini jika diperlukan
-    ];
+  // Mengambil data dari Firestore secara real-time menggunakan stream
+  Stream<List<GameModel>> fetchGames() {
+    return FirebaseFirestore.instance
+        .collection('games')
+        .snapshots()  // Menggunakan snapshots() untuk mendapatkan update real-time
+        .map((snapshot) {
+          return snapshot.docs
+              .map((doc) => GameModel.fromJson(doc.data(), doc.id))
+              .toList();
+        });
   }
 }

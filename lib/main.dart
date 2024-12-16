@@ -1,10 +1,12 @@
 import 'package:coba4/app/modules/Game_Detail/Messaging/notification_handler.dart';
+import 'package:coba4/dependency_injection.dart';
 import 'package:coba4/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'app/routes/app_pages.dart';
+import 'package:get_storage/get_storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +21,8 @@ void main() async {
   FirebaseMessagingHandler firebaseMessagingHandler = FirebaseMessagingHandler();
   await firebaseMessagingHandler.initPushNotification();
 
-  
+  await GetStorage.init(); // Initialize GetStorage
+
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
@@ -28,4 +31,6 @@ void main() async {
       getPages: AppPages.routes,
     ),
   );
+
+  DependencyInjection.init();
 }

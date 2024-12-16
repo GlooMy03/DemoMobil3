@@ -33,7 +33,7 @@ class AboutView extends GetView<AboutController> {
               child: Column(
                 children: [
                   const Icon(
-                    Icons.business_rounded,
+                    Icons.gamepad,
                     size: 60,
                     color: Colors.white,
                   ),
