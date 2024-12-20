@@ -2,31 +2,24 @@ import 'package:coba4/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 class DeskView extends StatelessWidget {
   const DeskView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF2A2A2A),
+      backgroundColor: Color(0xFF0E1234), // Background color sesuai gambar
       appBar: AppBar(
-        title: Text("Desk"),
+        backgroundColor: Color(0xFF0E1234),
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
         actions: [
-          PopupMenuButton<int>(
-            onSelected: (value) {
-              switch (value) {
-                case 0:
-                  Get.toNamed(Routes.GETCONNECT);
-                  break;
-              }
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem<int>(
-                value: 0,
-                child: Text("Article Game"),
-              ),
-            ],
+          IconButton(
+            icon: Icon(Icons.lock_outline, color: Colors.white),
+            onPressed: () {},
           ),
         ],
       ),
@@ -34,7 +27,7 @@ class DeskView extends StatelessWidget {
         child: Container(
           width: 350,
           decoration: BoxDecoration(
-            color: Colors.black,
+            color: Color(0xFF162349), // Warna latar container
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
@@ -47,75 +40,44 @@ class DeskView extends StatelessWidget {
                   topRight: Radius.circular(20),
                 ),
                 child: Image.asset(
-                  'assets/images/eldenring.jpeg', // Replace with your image URL
+                  'assets/images/eldenring.jpeg',
                   width: double.infinity,
-                  height: 200,
+                  height: 250,
                   fit: BoxFit.cover,
                 ),
               ),
 
-              // Spacing below the image
-              SizedBox(height: 20),
-
               // Game title
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: Text(
                   'ELDEN RING',
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 28,
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
+                    letterSpacing: 1.5,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
 
-              // Spacing below the title
-              SizedBox(height: 10),
-
               // Game description
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
-                  'Elden Ring takes place in the Lands Between, a realm blessed by entities called outer gods. Most prominent is the Greater Will, who created the Elden Ring – a collection of runes that govern physics...',
+                  'Elden Ring takes place in the Lands Between, a realm blessed by entities called outer gods. Most prominent is the Greater Will, who created the Elden Ring, a collection of runes that govern physics. The Greater Will\'s emissary, the Two Fingers, made a woman named Marika the Elden Ring\'s vessel, ascending her to godhood.',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.white60,
+                    color: Colors.white70,
+                    height: 1.5,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
 
               // Spacing below the description
-              SizedBox(height: 20),
-
-              // Pricing section
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '\$18.00',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.red,
-                      decoration: TextDecoration.lineThrough,
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    '\$13.50',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.green,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-
-              // Spacing below the price
-              SizedBox(height: 20),
+              SizedBox(height: 30),
 
               // Buy button
               Padding(
@@ -125,7 +87,7 @@ class DeskView extends StatelessWidget {
                     // Add your buy button logic here
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor: Color(0xFFFF4B4B),
                     minimumSize: Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -134,7 +96,7 @@ class DeskView extends StatelessWidget {
                   child: Text(
                     'BUY',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -150,10 +112,9 @@ class DeskView extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     Get.toNamed('/desklist');
-                    // Add your buy button logic here
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor: Color(0xFFFF4B4B),
                     minimumSize: Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -162,13 +123,15 @@ class DeskView extends StatelessWidget {
                   child: Text(
                     'Community',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
+
+              SizedBox(height: 20),
             ],
           ),
         ),

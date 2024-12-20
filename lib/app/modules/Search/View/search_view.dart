@@ -8,61 +8,46 @@ class SearchView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF0E0C28),
       appBar: AppBar(
-        title: Text(
-          'SEARCH',
-          style: TextStyle(color: const Color.fromARGB(255, 108, 202, 245)),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Get.back(),
         ),
-        backgroundColor: Colors.black,
+        title: Text(
+          '',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color(0xFF0E0C28),
+        elevation: 0,
+        actions: [
+          Icon(
+            Icons.lock_outline,
+            color: Colors.white,
+          ),
+          SizedBox(width: 16),
+        ],
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Search Bar with Mic
           Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Stack(
-              alignment: Alignment.centerRight,
-              children: [
-                TextField(
-                  controller: controller.searchTextController,
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    hintText: 'Search game...',
-                    hintStyle: TextStyle(color: Colors.white54),
-                    filled: true,
-                    fillColor: Colors.grey[800],
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                  onChanged: (value) => controller.searchGame(value),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: TextField(
+              controller: controller.searchTextController,
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: 'Search',
+                hintStyle: TextStyle(color: Colors.white70),
+                prefixIcon: Icon(Icons.search, color: Colors.white70),
+                filled: true,
+                fillColor: Color(0xFF1C1B2E),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
                 ),
-                Obx(
-                  () => IconButton(
-                    icon: Icon(
-                      controller.isListening.value ? Icons.mic : Icons.mic_none,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      if (controller.isListening.value) {
-                        controller.stopListening();
-                      } else {
-                        controller.startListening();
-                      }
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            color: const Color.fromARGB(255, 0, 0, 0),
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'TOP SELLER',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+              onChanged: (value) => controller.searchGame(value),
             ),
           ),
           Expanded(
@@ -70,35 +55,52 @@ class SearchView extends StatelessWidget {
               builder: (_) {
                 return ListView.builder(
                   itemCount: controller.filteredTopSellers.length,
+                  padding: EdgeInsets.only(top: 16),
                   itemBuilder: (context, index) {
-                    return Card(
-                      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 100,
+                    var game = controller.filteredTopSellers[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xFF1C1B2E),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: ListTile(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          leading: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
                             child: Image.asset(
-                              controller.filteredTopSellers[index]['image']!,
+                              game['image']!,
+                              width: 60,
+                              height: 60,
                               fit: BoxFit.cover,
                             ),
                           ),
-                          SizedBox(width: 16),
-                          Expanded(
-                            child: Text(
-                              controller.filteredTopSellers[index]['title']!,
-                              style: TextStyle(fontSize: 18, color: Colors.white),
+                          title: Text(
+                            game['title']!,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
-                          IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              // Tambahkan aksi yang kamu inginkan di sini
-                            },
+                          subtitle: Text(
+                            game['subtitle'] ?? '',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
                           ),
-                        ],
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.white,
+                            size: 16,
+                          ),
+                          onTap: () {
+                            // Tambahkan aksi navigasi di sini jika perlu
+                          },
+                        ),
                       ),
-                      color: const Color.fromARGB(255, 31, 30, 30),
                     );
                   },
                 );

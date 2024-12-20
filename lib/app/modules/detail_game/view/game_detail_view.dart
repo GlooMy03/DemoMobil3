@@ -9,89 +9,122 @@ class GameDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFF0A1228), // Warna latar belakang utama
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text(
-          'Game Detail',
-          style: TextStyle(color: Colors.teal),
+        backgroundColor: const Color(0xFF0A1228), // Warna latar belakang AppBar
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Get.back(),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.lock_outline, color: Colors.white),
+            onPressed: () {
+              // Aksi untuk ikon lock
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             // Display Game Image
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  controller.imageUrl,
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Center(
-                      child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
-                            : null,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
-                      ),
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) {
-                    return Center(
-                      child: Icon(
-                        Icons.broken_image,
-                        color: Colors.grey,
-                        size: 100,
-                      ),
-                    );
-                  },
-                ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.network(
+                controller.imageUrl,
+                fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          Colors.white), // Warna loading
+                    ),
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return const Center(
+                    child: Icon(
+                      Icons.broken_image,
+                      color: Colors.grey,
+                      size: 100,
+                    ),
+                  );
+                },
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Display Game Title
             Text(
               controller.title,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 16),
             // Display Game Description
             Text(
-              controller.description,  // Menampilkan description dari controller
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 16,
+              controller.description,
+              style: const TextStyle(
+                color: Colors.white70,
+                fontSize: 14,
+                height: 1.5,
               ),
               textAlign: TextAlign.center,
             ),
-
-
-            SizedBox(height: 20),
-            // Add a button to navigate to another page
-            ElevatedButton(
-              onPressed: () {
-                // Ganti '/some_other_page' dengan route tujuan Anda
-                Get.toNamed('/desklist');
-
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.teal, // Button color
-              ),
-              child: Text(
-                'Community Center',
-                style: TextStyle(color: Colors.white),
-              ),
+            const Spacer(),
+            // Buttons
+            Column(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Aksi untuk tombol Buy
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFD32F2F), // Warna tombol
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
+                  child: const Text(
+                    'BUY',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    Get.toNamed('/desklist');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFD32F2F), // Warna tombol
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
+                  child: const Text(
+                    'Community',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ],
             ),
-
           ],
         ),
       ),

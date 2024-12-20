@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:coba4/app/modules/AudioPlayer/controller/notifikasi_controller.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:coba4/app/modules/FirebaseCloud/app_color.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class CreateTaskScreen extends StatefulWidget {
@@ -28,18 +25,19 @@ class CreateTaskScreen extends StatefulWidget {
 class _CreateTaskScreenState extends State<CreateTaskScreen> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseStorage storage = FirebaseStorage.instance;
-  final AppColor appColor = AppColor();
   final TextEditingController controllerName = TextEditingController();
   final TextEditingController controllerDescription = TextEditingController();
   bool isLoading = false;
   File? selectedMediaFile;
   String? mediaUrl;
+  String? selectedAudio;
 
-  String? selectedAudio; // Variabel untuk menyimpan suara yang dipilih
-
-  // final NotificationController notificationController =
-  //     Get.put(NotificationController());
-  // Pemutar audio
+  // Warna latar belakang utama
+  final Color backgroundColor = Color(0xFF0D0D3A); // Biru gelap
+  final Color cardBackgroundColor = Color(0xFF1A1A6C); // Biru lebih terang
+  final Color primaryColor = Color(0xFFFF0044); // Merah mencolok
+  final Color textColor = Colors.white; // Putih untuk teks
+  final Color borderColor = Colors.grey[400]!; // Abu-abu terang untuk border
 
   @override
   void initState() {
@@ -53,17 +51,17 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[900],
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.grey[850],
+        backgroundColor: cardBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: textColor),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           widget.isEdit ? 'Edit Community Post' : 'Create New Post',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
         ),
       ),
       body: SafeArea(
@@ -94,27 +92,18 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     return Container(
       padding: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Colors.grey[850],
+        color: primaryColor,
         borderRadius: BorderRadius.circular(8.0),
       ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundColor: appColor.colorTertiary,
-            child: Icon(Icons.person, color: Colors.white),
+      child: Center(
+        child: Text(
+          'Share with the Community',
+          style: TextStyle(
+            color: textColor,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
           ),
-          SizedBox(width: 16.0),
-          Expanded(
-            child: Text(
-              'Share with the Community',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -123,9 +112,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     return Container(
       padding: EdgeInsets.all(20.0),
       decoration: BoxDecoration(
-        color: Colors.grey[850],
+        color: cardBackgroundColor,
         borderRadius: BorderRadius.circular(8.0),
-        border: Border.all(color: Colors.grey[700]!, width: 1),
+        border: Border.all(color: borderColor, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,21 +151,21 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
         TextField(
           controller: controller,
           maxLines: maxLines,
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: textColor),
           decoration: InputDecoration(
             labelText: label,
-            labelStyle: TextStyle(color: Colors.grey[400]),
-            prefixIcon: Icon(icon, color: Colors.grey[400]),
+            labelStyle: TextStyle(color: borderColor),
+            prefixIcon: Icon(icon, color: borderColor),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide(color: Colors.grey[600]!),
+              borderSide: BorderSide(color: borderColor),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide(color: appColor.colorTertiary),
+              borderSide: BorderSide(color: primaryColor),
             ),
             filled: true,
-            fillColor: Colors.grey[800],
+            fillColor: cardBackgroundColor,
           ),
         ),
         if (showMediaButtons) ...[
@@ -184,19 +173,19 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
           Row(
             children: [
               IconButton(
-                icon: Icon(Icons.camera_alt, color: appColor.colorTertiary),
+                icon: Icon(Icons.camera_alt, color: primaryColor),
                 onPressed: () async => _pickMedia(isVideo: false),
               ),
               IconButton(
-                icon: Icon(Icons.videocam, color: appColor.colorTertiary),
+                icon: Icon(Icons.videocam, color: primaryColor),
                 onPressed: () async => _pickMedia(isVideo: true),
               ),
               IconButton(
-                icon: Icon(Icons.photo_library, color: appColor.colorTertiary),
+                icon: Icon(Icons.photo_library, color: primaryColor),
                 onPressed: () async => _pickMediaFromGallery(),
               ),
               IconButton(
-                icon: Icon(Icons.audio_file, color: appColor.colorTertiary),
+                icon: Icon(Icons.music_note, color: primaryColor),
                 onPressed: () async {
                   await _showAudioSelectionDialog();
                 },
@@ -211,10 +200,10 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   Widget _buildMediaPreview() {
     return Column(
       children: [
-        Text('Selected Media:', style: TextStyle(color: Colors.white)),
+        Text('Selected Media:', style: TextStyle(color: textColor)),
         SizedBox(height: 8.0),
         if (selectedMediaFile!.path.contains('.mp4'))
-          Icon(Icons.video_library, size: 50, color: Colors.white)
+          Icon(Icons.video_library, size: 50, color: textColor)
         else
           Image.file(selectedMediaFile!, height: 100, width: 100),
       ],
@@ -226,7 +215,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       child: Container(
         padding: EdgeInsets.all(16.0),
         child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(appColor.colorTertiary),
+          valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
         ),
       ),
     );
@@ -238,7 +227,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       height: 50.0,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: appColor.colorTertiary,
+          backgroundColor: primaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
@@ -248,16 +237,15 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
           style: TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.bold,
+            color: textColor,
           ),
         ),
         onPressed: () async {
           await _handleSubmit();
           if (selectedAudio != null) {
-            await _playNotificationSound(
-                selectedAudio!); // Mainkan suara terpilih
+            await _playNotificationSound(selectedAudio!);
           } else {
-            _showSnackBarMessage(
-                'Silakan pilih suara notifikasi terlebih dahulu!');
+            _showSnackBarMessage('Silakan pilih suara notifikasi terlebih dahulu!');
           }
         },
       ),

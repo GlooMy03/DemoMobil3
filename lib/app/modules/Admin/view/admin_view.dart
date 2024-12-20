@@ -14,31 +14,86 @@ class AdminView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Admin Panel'),
-        backgroundColor: Colors.black,
+        title: Text('Admin Panel', style: TextStyle(color: Colors.white)),
+        backgroundColor: Color(0xFF0F1324), // Warna background AppBar
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
-      body: Padding(
+      body: Container(
+        color: Color(0xFF0F1324), // Warna background utama
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Input untuk title
-            TextField(
-              controller: titleController,
-              decoration: InputDecoration(labelText: 'Game Title'),
-            ),
-            // Input untuk image URL
-            TextField(
-              controller: imageController,
-              decoration: InputDecoration(labelText: 'Image URL'),
-            ),
-            // Input untuk description
-            TextField(
-              controller: descriptionController,
-              decoration: InputDecoration(labelText: 'Description'),
-              maxLines: 3,
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFF2D55), // Warna tombol Tambahkan Game
+                ),
+                child: Text('Tambahkan Game', style: TextStyle(color: Colors.white)),
+              ),
             ),
             SizedBox(height: 20),
-            // Tombol untuk menambahkan game baru
+            Container(
+              decoration: BoxDecoration(
+                color: Color(0xFF1C1A33), // Background container form
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: titleController,
+                    decoration: InputDecoration(
+                      labelText: 'Title',
+                      labelStyle: TextStyle(color: Colors.white),
+                      filled: true,
+                      fillColor: Color(0xFF0F1324), // Background TextField
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: imageController,
+                    decoration: InputDecoration(
+                      labelText: 'Image URL',
+                      labelStyle: TextStyle(color: Colors.white),
+                      filled: true,
+                      fillColor: Color(0xFF0F1324), // Background TextField
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: descriptionController,
+                    decoration: InputDecoration(
+                      labelText: 'Description',
+                      labelStyle: TextStyle(color: Colors.white),
+                      filled: true,
+                      fillColor: Color(0xFF0F1324), // Background TextField
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    maxLines: 3,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 final game = GameModel(
@@ -52,28 +107,29 @@ class AdminView extends StatelessWidget {
                 imageController.clear();
                 descriptionController.clear();
               },
-              child: Text('Add Game'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFFF2D55), // Warna tombol Add Game
+              ),
+              child: Text('Add Game', style: TextStyle(color: Colors.white)),
             ),
             SizedBox(height: 20),
-            // Daftar game yang ada
             Expanded(
               child: Obx(() => ListView.builder(
                     itemCount: controller.games.length,
                     itemBuilder: (context, index) {
                       final game = controller.games[index];
                       return ListTile(
-                        title: Text(game.title),
+                        title: Text(game.title, style: TextStyle(color: Colors.white)),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(game.image),
-                            Text(game.description), // Tampilkan deskripsi
+                            Text(game.image, style: TextStyle(color: Colors.white70)),
+                            Text(game.description, style: TextStyle(color: Colors.white70)), // Tampilkan deskripsi
                           ],
                         ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            // Tombol edit
                             IconButton(
                               icon: Icon(Icons.edit, color: Colors.orange),
                               onPressed: () {
@@ -89,18 +145,18 @@ class AdminView extends StatelessWidget {
                                       children: [
                                         TextField(
                                           controller: titleController,
-                                          decoration:
-                                              InputDecoration(labelText: 'Game Title'),
+                                          decoration: InputDecoration(
+                                              labelText: 'Game Title'),
                                         ),
                                         TextField(
                                           controller: imageController,
-                                          decoration:
-                                              InputDecoration(labelText: 'Image URL'),
+                                          decoration: InputDecoration(
+                                              labelText: 'Image URL'),
                                         ),
                                         TextField(
                                           controller: descriptionController,
-                                          decoration:
-                                              InputDecoration(labelText: 'Description'),
+                                          decoration: InputDecoration(
+                                              labelText: 'Description'),
                                           maxLines: 3,
                                         ),
                                       ],
@@ -126,7 +182,6 @@ class AdminView extends StatelessWidget {
                                 );
                               },
                             ),
-                            // Tombol delete
                             IconButton(
                               icon: Icon(Icons.delete, color: Colors.red),
                               onPressed: () {

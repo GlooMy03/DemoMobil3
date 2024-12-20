@@ -25,9 +25,28 @@ class _LoginPageState extends State<LoginPage> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'assets/images/backgroundlandingpage.png', // Update to the correct path for your background image
-            fit: BoxFit.cover,
+          Container(
+            color: Color(0xFF0B0D2A), // Warna latar belakang utama
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Image.asset(
+              'assets/images/part.png', // Ganti dengan path background yang benar
+              fit: BoxFit.cover,
+              height: MediaQuery.of(context).size.height * 0.4,
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Image.asset(
+              'assets/images/fight.png', // Ganti dengan path karakter petarung
+              fit: BoxFit.contain,
+              height: MediaQuery.of(context).size.height * 0.35,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -35,16 +54,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'GAMENET',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Colors.lightBlueAccent,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
-                  ),
-                ),
-                SizedBox(height: 8),
+                Spacer(flex: 2),
                 Text(
                   'LOGIN',
                   style: TextStyle(
@@ -53,7 +63,16 @@ class _LoginPageState extends State<LoginPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 32),
+                Text(
+                  'GameNET',
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Color(0xFF69E4D1),
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                ),
+                Spacer(),
                 TextField(
                   controller: _emailController,
                   decoration: InputDecoration(
@@ -85,86 +104,68 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(color: Colors.white),
                 ),
                 SizedBox(height: 32),
-                Obx(() {
-                  return ElevatedButton(
-                    onPressed: _authController.isLoading.value
-                        ? null
-                        : () {
-                            _authController.loginUser(
-                              _emailController.text,
-                              _passwordController.text,
-                            );
-                          },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 80),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: _authController.isLoading.value
-                        ? CircularProgressIndicator(color: Colors.white)
-                        : Text(
-                            'LOGIN',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                  );
-                }),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    // Navigate to signup page
-                    // Replace the below with your signup page route
-                    Get.toNamed('/signin');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.lightBlueAccent,
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 80),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Text(
-                    'SIGN UP',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: false,
-                          onChanged: (value) {},
-                          activeColor: Colors.red,
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Get.toNamed('/signin'); // Ganti dengan rute SIGN UP
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF69E4D1),
+                          padding: EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
-                        Text(
-                          'Remember me',
-                          style: TextStyle(color: Colors.white),
+                        child: Text(
+                          'SIGN UP',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
-                      ],
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        // Handle "Need Help?" action
-                      },
-                      child: Text(
-                        'Need Help?',
-                        style: TextStyle(color: Colors.white),
                       ),
+                    ),
+                    SizedBox(width: 16), // Jarak antara tombol
+                    Expanded(
+                      child: Obx(() {
+                        return ElevatedButton(
+                          onPressed: _authController.isLoading.value
+                              ? null
+                              : () {
+                                  _authController.loginUser(
+                                    _emailController.text,
+                                    _passwordController.text,
+                                  );
+                                },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF69E4D1),
+                            padding: EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: _authController.isLoading.value
+                              ? CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : Text(
+                                  'LOGIN',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                        );
+                      }),
                     ),
                   ],
                 ),
-                SizedBox(height: 16), // Add spacing before the signup button
+                Spacer(flex: 2),
               ],
             ),
           ),
