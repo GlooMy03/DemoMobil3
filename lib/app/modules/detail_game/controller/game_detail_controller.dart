@@ -5,4 +5,5 @@ class GameDetailController extends GetxController {
   final String title = Get.arguments['title'];
   final String imageUrl = Get.arguments['image'];
   final String description = Get.arguments['description'] ?? 'No description available';  // Menambahkan pengecekan null
+  final String price = Get.arguments['price'];
 }

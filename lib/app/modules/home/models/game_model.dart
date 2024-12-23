@@ -3,12 +3,14 @@ class GameModel {
   final String title;
   final String image;
   final String description;
+  final String price;
 
   GameModel({
     required this.id,
     required this.title,
     required this.image,
     required this.description,
+    required this.price,
   });
 
   // Factory method to create an instance of GameModel from Firestore JSON
@@ -18,6 +20,7 @@ class GameModel {
       title: json['title'] ?? '',
       image: json['image'] ?? '',
       description: json['description'] ?? '',
+      price: json['price'] ?? '',
     );
   }
 
@@ -27,6 +30,7 @@ class GameModel {
       'title': title,
       'image': image,
       'description': description,
+      'price': price,
     };
   }
 }

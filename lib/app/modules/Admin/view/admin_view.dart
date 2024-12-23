@@ -9,6 +9,7 @@ class AdminView extends StatelessWidget {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController imageController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +91,22 @@ class AdminView extends StatelessWidget {
                     maxLines: 3,
                     style: TextStyle(color: Colors.white),
                   ),
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: priceController,
+                    decoration: InputDecoration(
+                      labelText: 'Price',
+                      labelStyle: TextStyle(color: Colors.white),
+                      filled: true,
+                      fillColor: Color(0xFF0F1324), // Background TextField
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    style: TextStyle(color: Colors.white),
+                  ),
+
                 ],
               ),
             ),
@@ -101,11 +118,13 @@ class AdminView extends StatelessWidget {
                   title: titleController.text,
                   image: imageController.text,
                   description: descriptionController.text, // Tambahkan deskripsi
+                  price: priceController.text,
                 );
                 controller.addGame(game);
                 titleController.clear();
                 imageController.clear();
                 descriptionController.clear();
+                priceController.clear();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFFFF2D55), // Warna tombol Add Game
@@ -125,6 +144,7 @@ class AdminView extends StatelessWidget {
                           children: [
                             Text(game.image, style: TextStyle(color: Colors.white70)),
                             Text(game.description, style: TextStyle(color: Colors.white70)), // Tampilkan deskripsi
+                            Text(game.price, style: TextStyle(color: Colors.white70)), // Tampilkan price
                           ],
                         ),
                         trailing: Row(
@@ -159,6 +179,12 @@ class AdminView extends StatelessWidget {
                                               labelText: 'Description'),
                                           maxLines: 3,
                                         ),
+                                        TextField(
+                                          controller: priceController,
+                                          decoration: InputDecoration(
+                                              labelText: 'Price'),
+                                          maxLines: 3,
+                                        ),
                                       ],
                                     ),
                                     actions: [
@@ -171,6 +197,7 @@ class AdminView extends StatelessWidget {
                                               title: titleController.text,
                                               image: imageController.text,
                                               description: descriptionController.text,
+                                              price: priceController.text,
                                             ),
                                           );
                                           Navigator.pop(context);

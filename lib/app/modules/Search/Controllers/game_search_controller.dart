@@ -2,31 +2,23 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GameSearchController extends GetxController {
   final stt.SpeechToText _speech = stt.SpeechToText();
   final TextEditingController searchTextController = TextEditingController();
-
+  
   var isListening = false.obs;
   var text = "".obs;
-  var filteredTopSellers = <Map<String, String>>[].obs;
+  var filteredGames = <Map<String, dynamic>>[].obs;
 
-  final List<Map<String, String>> topSellers = [
-    {'title': 'EA SPORTS FC 25', 'image': 'assets/images/spiderman.jpeg'},
-    {'title': 'Counter-Strike 2', 'image': 'assets/images/spiderman.jpeg'},
-    {'title': 'Black Myth: Wukong', 'image': 'assets/images/spiderman.jpeg'},
-    {'title': 'Warhammer 40,000', 'image': 'assets/images/spiderman.jpeg'},
-    {'title': 'DRAGON BALL: Sparking! ZERO', 'image': 'assets/images/spiderman.jpeg'},
-    {'title': 'PUBG: BATTLEGROUNDS', 'image': 'assets/images/spiderman.jpeg'},
-  ];
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   void onInit() {
     super.onInit();
-    filteredTopSellers.value = topSellers;
     _initSpeech();
-
-    // Listener untuk text field
+    fetchAllGames();
     searchTextController.addListener(() {
       searchGame(searchTextController.text);
     });
@@ -36,7 +28,7 @@ class GameSearchController extends GetxController {
     try {
       await _speech.initialize();
     } catch (e) {
-      print(e);
+      print("Speech-to-Text initialization error: $e");
     }
   }
 
@@ -47,15 +39,56 @@ class GameSearchController extends GetxController {
     }
   }
 
-  void searchGame(String query) {
-    if (query.isEmpty) {
-      filteredTopSellers.value = topSellers;
-    } else {
-      filteredTopSellers.value = topSellers
-          .where((game) => game['title']!.toLowerCase().contains(query.toLowerCase()))
-          .toList();
+  void fetchAllGames() async {
+    try {
+      final allGames = await firestore.collection('games').get();
+      if (allGames.docs.isNotEmpty) {
+        filteredGames.value = allGames.docs.map((doc) {
+          var data = doc.data();
+          return {
+            'title': data['title'] ?? 'No Title',
+            'description': data['description'] ?? 'No description available.',
+            'image': data['image'] ?? 'assets/images/default_game.png',
+          };
+        }).toList();
+      } else {
+        print('No games found in the Firestore collection.');
+      }
+    } catch (e) {
+      print("Error fetching all games: $e");
+      filteredGames.clear();
     }
-    update(); // Memperbarui tampilan
+  }
+
+  void searchGame(String query) async {
+    if (query.isEmpty) {
+      fetchAllGames();
+    } else {
+      try {
+        final gameQuery = await firestore
+            .collection('games')
+            .where('title', isGreaterThanOrEqualTo: query)
+            .where('title', isLessThanOrEqualTo: query + '\uf8ff')
+            .get();
+
+        if (gameQuery.docs.isNotEmpty) {
+          filteredGames.value = gameQuery.docs.map((doc) {
+            var data = doc.data();
+            return {
+              'title': data['title'] ?? 'No Title',
+              'description': data['description'] ?? 'No description available.',
+              'image': data['image'] ?? 'assets/images/default_game.png',
+            };
+          }).toList();
+        } else {
+          print("No games found for the search query.");
+          filteredGames.clear(); // Clear the list if no matches
+        }
+      } catch (e) {
+        print("Error fetching games: $e");
+        filteredGames.clear();
+      }
+    }
   }
 
   void startListening() async {
@@ -64,10 +97,10 @@ class GameSearchController extends GetxController {
       isListening.value = true;
       await _speech.listen(onResult: (result) {
         text.value = result.recognizedWords;
-        searchTextController.text = result.recognizedWords; // Update search bar text
+        searchTextController.text = result.recognizedWords;
       });
     } else {
-      print("Izin mikrofon ditolak.");
+      print("Microphone permission denied.");
     }
   }
 

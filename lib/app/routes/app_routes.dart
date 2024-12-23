@@ -46,5 +46,5 @@ class AppRoutes {
   static const GAMEDETAIL = '/game_detail';
 
   static const BUY = '/buy';
-  static const STORAGE = '/storage';
+  static const WISHLIST = '/wishlist';
 }

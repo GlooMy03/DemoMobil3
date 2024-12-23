@@ -37,10 +37,11 @@ class BuyView extends GetView<BuyController> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      'assets/images/ghost.jpeg',
+                    child: Image.network(
+                      controller.imageUrl, // Display the image passed to controller
                       width: 60,
                       height: 60,
+                      fit: BoxFit.cover,
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -48,17 +49,17 @@ class BuyView extends GetView<BuyController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Ghost',
-                          style: TextStyle(
+                        Text(
+                          controller.title,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const Text(
-                          'Game Ghost',
-                          style: TextStyle(
+                        Text(
+                          controller.description,
+                          style: const TextStyle(
                             color: Colors.grey,
                             fontSize: 14,
                           ),
@@ -67,7 +68,7 @@ class BuyView extends GetView<BuyController> {
                     ),
                   ),
                   Text(
-                    'Rp ${controller.totalAmount}',
+                    'Rp ${controller.price}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -92,7 +93,7 @@ class BuyView extends GetView<BuyController> {
                         style: TextStyle(color: Colors.white),
                       ),
                       Text(
-                        'Rp ${controller.totalAmount}',
+                        'Rp ${controller.price}',
                         style: const TextStyle(color: Colors.white),
                       ),
                     ],
@@ -106,8 +107,12 @@ class BuyView extends GetView<BuyController> {
                         style: TextStyle(color: Colors.white),
                       ),
                       Text(
-                        'Rp ${controller.totalAmount}',
-                        style: const TextStyle(color: Colors.white),
+                        'Rp ${controller.price}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -130,9 +135,6 @@ class BuyView extends GetView<BuyController> {
             const SizedBox(height: 24),
 
             // Payment Method Details
-            // Replace the Payment Method and GameNet Account sections with:
-
-// Payment Method Details
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -149,7 +151,7 @@ class BuyView extends GetView<BuyController> {
 
             const SizedBox(height: 16),
 
-// GameNet Account Details
+            // GameNet Account Details
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

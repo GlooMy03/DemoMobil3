@@ -1,12 +1,9 @@
-import 'package:coba4/app/modules/detail_game/controller/game_detail_controller.dart';
 import 'package:coba4/app/modules/wishlist/controller/wishlist_controller.dart';
 import 'package:get/get.dart';
 
-
-class GameBinding extends Bindings {
+class WishlistBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<GameDetailController>(() => GameDetailController());
     Get.put<WishlistController>(WishlistController(), permanent: true);
   }
 }

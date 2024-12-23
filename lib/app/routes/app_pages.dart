@@ -23,7 +23,9 @@ import 'package:coba4/app/modules/login/views/loginview.dart';
 import 'package:coba4/app/modules/profil_edit/bindings/profile_binding.dart';
 import 'package:coba4/app/modules/profil_edit/views/profile_view.dart';
 import 'package:coba4/app/modules/signin/views/signinview.dart';
-import 'package:coba4/app/modules/storage/view/storage_view.dart';
+import 'package:coba4/app/modules/wishlist/binding/wishlist_binding.dart';
+import 'package:coba4/app/modules/wishlist/view/wishlist_view.dart';
+
 import 'package:get/get.dart';
 
 import '../modules/landing_page/bindings/landing_binding.dart';
@@ -96,6 +98,12 @@ class AppPages {
       binding: BuyBinding(),
     ),
 
+    GetPage(
+      name: '/wishlist',
+      page: () => WishlistView(),
+      binding: WishlistBinding(),
+    ),
+
     //tambahan Getconnect
     GetPage(
         name: _Paths.GETCONNECT,
@@ -127,7 +135,6 @@ class AppPages {
     
     
     
-    GetPage(name: AppRoutes.STORAGE, page: () => StorageViewer()),
-    // Tambahkan rute lainnya sesuai kebutuhan
+    
   ];
 }

@@ -12,35 +12,47 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Color(0xFF0E0C28),
         elevation: 0,
-        title: Row(
-          children: [
-            CircleAvatar(
-              backgroundImage: AssetImage('assets/images/profile.jpg'), // Gambar avatar lokal
-              radius: 18,
+        title: GestureDetector(
+  onTap: () {
+    // Ganti dengan nama route halaman yang ingin dituju
+        Get.toNamed('/about');
+      },
+      child: Row(
+        children: [
+          CircleAvatar(
+            backgroundColor: Colors.transparent, // Optional: Makes the background transparent
+            radius: 18,
+            child: Icon(
+              Icons.gamepad, // Replace with your desired icon
+              color: Colors.white, // Color of the icon
+              size: 24, // Adjust the icon size
             ),
-            SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Halo Kelompok 4',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+          ),
+          SizedBox(width: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'GAMENET',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
-                Text(
-                  'Apa Kabar?',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 12,
-                  ),
+              ),
+              Text(
+                'Toko Game Murah',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 12,
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+
         actions: [
           IconButton(
             icon: Icon(Icons.search, color: Colors.white),
@@ -135,48 +147,61 @@ class HomeView extends StatelessWidget {
         itemCount: controller.games.length,
         itemBuilder: (context, index) {
           var game = controller.games[index];
-          return _buildGameCard(game.title, game.image, game.description);
+          return _buildGameCard(game.title, game.image, game.description, game.price);
         },
       );
     });
   }
 
-  Widget _buildGameCard(String title, String imageUrl, String description) {
+  Widget _buildGameCard(String title, String imageUrl, String description, String price) {
     return GestureDetector(
       onTap: () {
         Get.toNamed('/game_detail', arguments: {
           'title': title,
           'image': imageUrl,
           'description': description,
+          'price': price,
         });
       },
       child: Column(
-        children: [
-          Expanded(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
-                'assets/images/ghost.jpeg', // Gambar game lokal
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Center(
-                    child: Icon(
-                      Icons.broken_image,
-                      color: Colors.grey,
-                    ),
-                  );
-                },
-              ),
+      children: [
+        Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.network(
+              imageUrl,
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                        : null,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
+                  ),
+                );
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return Center(
+                  child: Icon(
+                    Icons.broken_image,
+                    color: Colors.grey,
+                  ),
+                );
+              },
             ),
           ),
-          SizedBox(height: 5),
-          Text(
-            title,
-            style: TextStyle(color: Colors.white, fontSize: 14),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+        ),
+        SizedBox(height: 5),
+        Text(
+          title,
+          style: TextStyle(color: Colors.white),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    ),
     );
   }
 
@@ -192,7 +217,7 @@ class HomeView extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.shopping_cart_outlined, color: Colors.white),
             onPressed: () {
-              Get.toNamed("/storage");
+              Get.toNamed("/wishlist");
             },
           ),
           IconButton(

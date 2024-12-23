@@ -126,7 +126,49 @@ class AboutView extends GetView<AboutController> {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    "Anggota: gtw",
+                    "Anggota:",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white70,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  // Menampilkan anggota satu per satu
+                  Text(
+                    "Farlan",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white70,
+                    ),
+                  ),
+                  Text(
+                    "Nanda",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white70,
+                    ),
+                  ),
+                  Text(
+                    "Alfi",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white70,
+                    ),
+                  ),
+                  Text(
+                    "Ali",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white70,
+                    ),
+                  ),
+                  Text(
+                    "Ichsan",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14,
@@ -135,6 +177,7 @@ class AboutView extends GetView<AboutController> {
                   ),
                 ],
               ),
+
             ),
           ],
         ),
