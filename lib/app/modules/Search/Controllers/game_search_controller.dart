@@ -49,6 +49,7 @@ class GameSearchController extends GetxController {
             'title': data['title'] ?? 'No Title',
             'description': data['description'] ?? 'No description available.',
             'image': data['image'] ?? 'assets/images/default_game.png',
+             'price': data['price'] ?? 'Unknown Price',
           };
         }).toList();
       } else {
@@ -60,7 +61,7 @@ class GameSearchController extends GetxController {
     }
   }
 
-  void searchGame(String query) async {
+    void searchGame(String query) async {
     if (query.isEmpty) {
       fetchAllGames();
     } else {
@@ -78,6 +79,7 @@ class GameSearchController extends GetxController {
               'title': data['title'] ?? 'No Title',
               'description': data['description'] ?? 'No description available.',
               'image': data['image'] ?? 'assets/images/default_game.png',
+              'price': data['price'] ?? 'Unknown Price',  // Tambahkan price di sini
             };
           }).toList();
         } else {
@@ -90,6 +92,7 @@ class GameSearchController extends GetxController {
       }
     }
   }
+
 
   void startListening() async {
     await checkMicrophonePermission();

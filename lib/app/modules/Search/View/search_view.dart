@@ -1,7 +1,8 @@
+// File: /lib/app/modules/Search/View/search_view.dart
+
 import 'package:coba4/app/modules/Search/Controllers/game_search_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 
 class SearchView extends StatelessWidget {
   final GameSearchController controller = Get.put(GameSearchController());
@@ -42,7 +43,7 @@ class SearchView extends StatelessWidget {
                 ),
                 suffixIcon: Obx(() => IconButton(
                       icon: Icon(
-                        controller.isListening.value ? Icons.mic_off : Icons.mic,
+                        controller.isListening.value ? Icons.mic : Icons.mic_off,
                         color: Colors.white70,
                       ),
                       onPressed: () {
@@ -76,8 +77,16 @@ class SearchView extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: GestureDetector(
                       onTap: () {
-                        // Menavigasi ke halaman game_detail dan membawa data game yang dipilih
-                        Get.toNamed('/game_detail', arguments: game); // Kirim data game ke halaman detail
+                        var price = game['price']; // Ambil harga dari game
+                        print('Price: $price'); // Debug untuk melihat harga yang dikirim
+
+                        // Pastikan jika harga ada, baru diteruskan
+                        Get.toNamed('/game_detail', arguments: {
+                          'title': game['title'],
+                          'image': game['image'],
+                          'description': game['description'],
+                          'price': price ?? 'Unknown Price', // Mengirim harga atau default jika null
+                        });
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -115,8 +124,6 @@ class SearchView extends StatelessWidget {
               );
             }),
           ),
-
-
         ],
       ),
     );

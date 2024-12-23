@@ -226,12 +226,6 @@ class HomeView extends StatelessWidget {
               Get.toNamed("/profile");
             },
           ),
-          IconButton(
-            icon: Icon(Icons.admin_panel_settings, color: Colors.white),
-            onPressed: () {
-              Get.toNamed("/admin");
-            },
-          ),
         ],
       ),
     );

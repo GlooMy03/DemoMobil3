@@ -42,7 +42,6 @@ class AppRoutes {
   static const CREATETASKSCREEN = '/createtaskscreen';
   static const ABOUT = '/about';
 
-  static const ADMIN = '/admin';
   static const GAMEDETAIL = '/game_detail';
 
   static const BUY = '/buy';

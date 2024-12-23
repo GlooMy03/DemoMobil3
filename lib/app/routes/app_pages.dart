@@ -1,5 +1,3 @@
-import 'package:coba4/app/modules/Admin/binding/admin_binding.dart';
-import 'package:coba4/app/modules/Admin/view/admin_view.dart';
 import 'package:coba4/app/modules/Connection_wifi/binding/connection_binding.dart';
 import 'package:coba4/app/modules/Connection_wifi/view/connection_view.dart';
 import 'package:coba4/app/modules/FirebaseCloud/create_task_screen.dart';
@@ -73,12 +71,6 @@ class AppPages {
       name: '/about',
       page: () => AboutView(),
       binding: AboutBinding(), // tambahkan binding di sini
-    ),
-
-    GetPage(
-      name: '/admin',
-      page: () => AdminView(),
-      binding: AdminBinding(), // tambahkan binding di sini
     ),
 
     GetPage(
