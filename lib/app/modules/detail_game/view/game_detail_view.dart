@@ -84,7 +84,7 @@ class GameDetailView extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // Aksi untuk tombol Buy
+                    Get.toNamed('/buy');// Aksi untuk tombol Buy
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFD32F2F), // Warna tombol

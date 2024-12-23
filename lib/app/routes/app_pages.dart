@@ -14,6 +14,8 @@ import 'package:coba4/app/modules/Search/View/Search_view.dart';
 import 'package:coba4/app/modules/Search/bindings/search_binding.dart';
 import 'package:coba4/app/modules/about/bindings/about_binding.dart';
 import 'package:coba4/app/modules/about/views/about_page.dart';
+import 'package:coba4/app/modules/buy/bindings/buy_binding.dart';
+import 'package:coba4/app/modules/buy/views/buy_view.dart';
 import 'package:coba4/app/modules/detail_game/binding/game_detail.dart';
 import 'package:coba4/app/modules/detail_game/view/game_detail_view.dart';
 import 'package:coba4/app/modules/home/views/home_view.dart';
@@ -87,6 +89,11 @@ class AppPages {
       name: '/NoConnectionView',
       page: () => NoConnectionView(),
       binding: ConnectionBinding(),  
+    ),
+    GetPage(
+      name: '/buy',
+      page: () => BuyView() ,
+      binding: BuyBinding(),
     ),
 
     //tambahan Getconnect

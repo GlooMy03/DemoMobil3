@@ -9,7 +9,7 @@ abstract class Routes {
   static const GAMEDETAILSCREEN = _Paths.GAMEDETAILSCREEN;
   static const LANDING = _Paths.LANDING;
   static const ABOUT = _Paths.ABOUT;
-
+  //static const BUY = _Paths.BUY;
   //Tambahan Getconnect
   static const GETCONNECT = _Paths.GETCONNECT;
   static const ARTICLE_DETAILS = _Paths.ARTICLE_DETAILS;
@@ -30,11 +30,8 @@ abstract class _Paths {
   static const ARTICLE_DETAILS = '/article_details';
   static const ARTICLE_DETAILS_WEBVIEW = '/article_details_webview';
 
-
-
-
   // Path untuk NoConnectionView
-  static const NO_CONNECTION = '/no_connection';  // Tambahkan path baru ini
+  static const NO_CONNECTION = '/no_connection'; // Tambahkan path baru ini
 }
 
 class AppRoutes {
@@ -45,11 +42,9 @@ class AppRoutes {
   static const CREATETASKSCREEN = '/createtaskscreen';
   static const ABOUT = '/about';
 
-
   static const ADMIN = '/admin';
   static const GAMEDETAIL = '/game_detail';
 
-  
-
+  static const BUY = '/buy';
   static const STORAGE = '/storage';
 }
